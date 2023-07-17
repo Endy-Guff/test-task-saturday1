@@ -1,26 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useEffect} from 'react';
 import './App.css';
+import "firebase/compat/auth";
+import "firebase/compat/storage";
+import "firebase/compat/firestore";
+import 'firebase/compat/database'
+import {ProductsApp} from "./components/ProductsApp/ProductsApp";
+import {BrowserRouter} from "react-router-dom";
+import {Notification} from "./components/Notification/Notification";
+import {useAppDispatch} from "./redux/store";
+import {cartActions} from "./redux/cartSlice";
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const dispatch = useAppDispatch()
+    useEffect(()=>{
+        dispatch(cartActions.loadLocalStorage())
+    })
+
+    return (
+        <BrowserRouter>
+                <Notification />
+                <ProductsApp/>
+        </BrowserRouter>
+
+    );
 }
 
 export default App;
